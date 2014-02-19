@@ -58,7 +58,7 @@ describe Swagger::Docs::Generator do
         expect(response["apis"].count).to eq 1
       end
       it "writes api path correctly" do
-        expect(response["apis"][0]["path"]).to eq "api/v1/sample.{format}"
+        expect(response["apis"][0]["path"]).to eq "/api/v1/sample.{format}"
       end
     end
     context "resource file" do
@@ -70,7 +70,7 @@ describe Swagger::Docs::Generator do
         expect(response["basePath"]).to eq "http://api.no.where/"
       end
       it "writes resourcePath correctly" do
-        expect(response["resourcePath"]).to eq "api/v1/sample"
+        expect(response["resourcePath"]).to eq "/api/v1/sample"
       end
       it "writes out expected api count" do
         expect(response["apis"].count).to eq 7
@@ -79,7 +79,7 @@ describe Swagger::Docs::Generator do
         #"apis":[{"path":" /sample","operations":[{"summary":"Fetches all User items"
         #,"method":"get","nickname":"Api::V1::Sample#index"}]
         it "writes path correctly" do
-          expect(first["path"]).to eq "api/v1/sample"
+          expect(first["path"]).to eq "/api/v1/sample"
         end
       end
     end
@@ -167,7 +167,7 @@ describe Swagger::Docs::Generator do
           expect(response["apis"].count).to eq 1
         end
         it "writes api path correctly" do
-          expect(response["apis"][0]["path"]).to eq "sample.{format}"
+          expect(response["apis"][0]["path"]).to eq "/sample.{format}"
         end
         it "writes api description correctly" do
           expect(response["apis"][0]["description"]).to eq "User Management"
@@ -190,7 +190,7 @@ describe Swagger::Docs::Generator do
           expect(response["basePath"]).to eq "http://api.no.where/api/v1/"
         end
         it "writes resourcePath correctly" do
-          expect(response["resourcePath"]).to eq "sample"
+          expect(response["resourcePath"]).to eq "/sample"
         end
         it "writes out expected api count" do
           expect(response["apis"].count).to eq 7
@@ -200,12 +200,12 @@ describe Swagger::Docs::Generator do
           #"apis":[{"path":" /sample","operations":[{"summary":"Fetches all User items"
           #,"method":"get","nickname":"Api::V1::Sample#index"}]
           it "writes path correctly when api extension type is not set" do
-            expect(api["path"]).to eq "sample"
+            expect(api["path"]).to eq "/sample"
           end
           it "writes path correctly when api extension type is set" do
             config[DEFAULT_VER][:api_extension_type] = :json
             generate(config)
-            expect(api["path"]).to eq "sample.json"
+            expect(api["path"]).to eq "/sample.json"
           end
           it "writes summary correctly" do
             expect(operations.first["summary"]).to eq "Fetches all User items"

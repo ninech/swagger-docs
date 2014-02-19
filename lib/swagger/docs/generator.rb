@@ -31,7 +31,7 @@ module Swagger
           api_path.gsub!('(.:format)', extension ? ".#{extension}" : '')
           api_path.gsub!(/:(\w+)/, '{\1}')
           api_path.gsub!(controller_base_path, '')
-          trim_slashes(api_path)
+          ensure_leading_slash(trim_slashes(api_path))
         end
 
         def trim_leading_slash(str)
@@ -46,6 +46,11 @@ module Swagger
 
         def trim_slashes(str)
           trim_leading_slash(trim_trailing_slash(str))
+        end
+
+        def ensure_leading_slash(str)
+          return str if str =~ /\A\//
+          str.prepend('/')
         end
 
         def set_real_methods
@@ -104,7 +109,7 @@ module Swagger
               operations[:parameters] = filter_path_params(api_path, operations[:parameters]) if operations[:parameters]
               apis << {:path => api_path, :operations => [operations]}
             end
-            resource_path = trim_leading_slash(debased_path.to_s.underscore)
+            resource_path = ensure_leading_slash(debased_path.to_s.underscore)
             resource = header.merge({:resource_path => resource_path, :apis => apis})
             camelize_keys_deep!(resource)
             # write controller resource file
